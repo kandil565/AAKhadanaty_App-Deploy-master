@@ -7,7 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { BookingProvider } from "@/contexts/BookingContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
-import Chatbot from "@/components/Chatbot";
+import ChatbotDynamic from "@/components/ChatbotDynamic";
 import Index from "./pages/Index";
 import ServicesPage from "./pages/ServicesPage";
 import ServiceDetailsPage from "./pages/ServiceDetailsPage";
@@ -50,7 +50,7 @@ const App = () => (
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </BrowserRouter>
-              <Chatbot />
+              <ChatbotDynamic />
             </TooltipProvider>
           </BookingProvider>
         </AuthProvider>
