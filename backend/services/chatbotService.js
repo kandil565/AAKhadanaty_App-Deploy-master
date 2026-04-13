@@ -66,7 +66,7 @@ const responses = {
 };
 
 // Match keywords in user message
-function findKeywordMatch(message, language = 'ar') {
+export function findKeywordMatch(message, language = 'ar') {
   const lowerMessage = message.toLowerCase();
   
   for (const [category, keywordList] of Object.entries(keywords)) {
@@ -79,7 +79,7 @@ function findKeywordMatch(message, language = 'ar') {
 }
 
 // Get bot response based on keywords
-function getChatbotResponse(userMessage, language = 'ar') {
+export function getChatbotResponse(userMessage, language = 'ar') {
   const category = findKeywordMatch(userMessage, language);
   const categoryResponses = responses[category] || responses.default;
   
@@ -91,7 +91,7 @@ function getChatbotResponse(userMessage, language = 'ar') {
 }
 
 // Advanced: Integration with AI API (optional)
-async function getAIResponse(userMessage, language = 'ar') {
+export async function getAIResponse(userMessage, language = 'ar') {
   try {
     // Example: Using GitHub's Copilot API or any other AI service
     // This is optional - use keyword matching as fallback
@@ -105,4 +105,4 @@ async function getAIResponse(userMessage, language = 'ar') {
   }
 }
 
-export { getChatbotResponse, getAIResponse, findKeywordMatch };
+
