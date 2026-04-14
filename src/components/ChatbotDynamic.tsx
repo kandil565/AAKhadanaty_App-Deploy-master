@@ -58,7 +58,7 @@ export default function ChatbotDynamic() {
 
     try {
       // Call backend API
-      const response = await fetch('http://localhost:5000/api/chatbot/ask', {
+      const response = await fetch('/api/chatbot/ask', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

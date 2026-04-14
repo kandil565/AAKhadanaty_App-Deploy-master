@@ -1,5 +1,17 @@
 import Booking from "../models/Booking.js";
 
+const FIXED_SERVICE_PRICES = {
+  ac: 600,
+  plumbing: 400,
+  electrical: 450,
+  cleaning: 300,
+  therapy: 500,
+  consultation: 300,
+  counseling: 350,
+  massage: 450,
+  training: 400,
+};
+
 export const getAllBookings = async (req, res) => {
   try {
     const bookings = await Booking.find().populate(
@@ -67,32 +79,47 @@ export const createBooking = async (req, res) => {
       date,
       time,
       duration,
-      price,
       notes,
       therapistName,
       location,
+      customerName,
+      customerPhone,
+      customerEmail,
     } = req.body;
 
-    if (!serviceName || !serviceType || !date || !time || !price) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Please provide all required fields",
-        });
+    if (!serviceName || !serviceType || !date || !time) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide all required fields",
+      });
+    }
+
+    const normalizedType = String(serviceType).trim().toLowerCase();
+    const finalPrice = FIXED_SERVICE_PRICES[normalizedType];
+
+    if (!finalPrice) {
+      return res.status(400).json({
+        success: false,
+        message: "Service type does not match a fixed price",
+      });
     }
 
     const booking = await Booking.create({
       userId: req.userId,
       serviceName,
-      serviceType,
+      serviceType: normalizedType,
       date,
       time,
       duration,
-      price,
+      price: finalPrice,
+      fixedPrice: true,
+      priceSource: "fixed",
       notes,
       therapistName,
       location,
+      customerName,
+      customerPhone,
+      customerEmail,
     });
 
     res.status(201).json({
@@ -121,7 +148,13 @@ export const updateBooking = async (req, res) => {
         .json({ success: false, message: "Not authorized" });
     }
 
-    booking = await Booking.findByIdAndUpdate(req.params.id, req.body, {
+    const allowedUpdates = ["notes", "status", "paymentStatus", "duration", "location"];
+    const updates = {};
+    allowedUpdates.forEach((field) => {
+      if (req.body[field] !== undefined) updates[field] = req.body[field];
+    });
+
+    booking = await Booking.findByIdAndUpdate(req.params.id, updates, {
       new: true,
       runValidators: true,
     });

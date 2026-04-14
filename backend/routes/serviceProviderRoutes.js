@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
     else if (sort === "experience") sortOption = { experience: -1 };
 
     const providers = await ServiceProvider.find(query)
-      .populate("userId", "name email phone profileImage")
+      .populate("userId", "name profileImage")
       .sort(sortOption)
       .lean();
 
@@ -36,7 +36,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const provider = await ServiceProvider.findById(req.params.id)
-      .populate("userId", "name email phone profileImage bio")
+      .populate("userId", "name profileImage bio")
       .lean();
     if (!provider) return res.status(404).json({ success: false, message: "Provider not found" });
 

@@ -37,6 +37,15 @@ const bookingSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Please provide a price"],
     },
+    fixedPrice: {
+      type: Boolean,
+      default: true,
+    },
+    priceSource: {
+      type: String,
+      enum: ["fixed", "custom"],
+      default: "fixed",
+    },
     notes: {
       type: String,
       default: "",
