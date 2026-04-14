@@ -16,6 +16,15 @@ import adminRoutes from "./routes/adminRoutes.js";
 
 const app = express();
 
+// Health check (before everything)
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Server is running",
+    dbConnected: isConnected
+  });
+});
+
 // CORS Configuration
 const allowedOrigins = [
   "https://aakhadanaty-app.vercel.app",
@@ -58,6 +67,9 @@ const connectDB = async () => {
 
 // Middleware to connect DB on each request (serverless-friendly)
 app.use(async (req, res, next) => {
+  // Skip DB connection for health check
+  if (req.path === "/api/health") return next();
+  
   try {
     await connectDB();
     next();
@@ -73,15 +85,6 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/providers", serviceProviderRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/admin", adminRoutes);
-
-// Health check
-app.get("/api/health", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Server is running",
-    dbConnected: isConnected
-  });
-});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
