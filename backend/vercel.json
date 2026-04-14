@@ -13,7 +13,7 @@
     }
   ],
   "env": {
-    "MONGODB_URI": "mongodb+srv://DevDouu:Moh0100189832111%23@cluster0.d6aspiz.mongodb.net/?appName=Cluster0",
+    "MONGODB_URI": "mongodb+srv://DevDouu:RqPIwiortbsiJWNt@cluster0.d6aspiz.mongodb.net/?appName=Cluster0",
     "JWT_SECRET": "your-super-secret-jwt-key-change-this-in-production-123456789",
     "JWT_EXPIRE": "7d",
     "NODE_ENV": "production",
